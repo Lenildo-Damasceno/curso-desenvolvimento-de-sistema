@@ -1,19 +1,25 @@
-const PromptSync = require("prompt-sync");
-const prompt = PromptSync();
+import promptSync from 'prompt-sync';
 
-console.log("=== Controle de Velocidade ===");
+const prompt = promptSync({ sigint: true });
 
-let limite = parseFloat(prompt("Digite a VELOCIDADE PERMITIDA: "));
-let velocidade = parseFloat(prompt("Digite a velocidade do carro (em km/h): "));
+console.log('=== Controle de Velocidade ===');
+
+const limite = Number(prompt('Digite a VELOCIDADE PERMITIDA: '));
+const velocidade = Number(prompt('Digite a velocidade do carro (em km/h): '));
+
+if (Number.isNaN(limite) || Number.isNaN(velocidade)) {
+  console.log('Entrada inválida. Certifique-se de digitar números.');
+  process.exit(1);
+}
 
 if (velocidade > limite) {
-    let excesso = velocidade - limite;
+  const excesso = velocidade - limite;
 
-    if (excesso <= (limite * 0.1)) {
-        console.log("ATENÇÃO: ACIMA DO PERMITIDO, MULTA LEVE");
-    } else {
-        console.log("ATENÇÃO: ACIMA DO PERMITIDO, MULTA GRAVE");
-    }
+  if (excesso <= limite * 0.1) {
+    console.log('ATENÇÃO: ACIMA DO PERMITIDO, MULTA LEVE');
+  } else {
+    console.log('ATENÇÃO: ACIMA DO PERMITIDO, MULTA GRAVE');
+  }
 } else {
-    console.log("Velocidade dentro do limite permitido.");
+  console.log('Velocidade dentro do limite permitido.');
 }
