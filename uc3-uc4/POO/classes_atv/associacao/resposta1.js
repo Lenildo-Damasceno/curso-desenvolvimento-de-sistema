@@ -1,217 +1,52 @@
-import promptSync from "prompt-sync";
-const prompt = promptSync();
+import { Computador, Memoria, Processador, Armazenamento, Tela } from './classes.js';
+import promptSync from 'prompt-sync';
+const prompt = promptSync({ sigint: true });
 
+let computador1;
 
-class Memoria {
-    #tipo
-    #frequencia
-    #capacidade
-
-    constructor(tipo, frequencia, capacidade) {
-        this.#tipo = tipo;
-        this.#frequencia = frequencia;
-        this.#capacidade = capacidade;
-    }
-
-    set tipo(novoTipo) {
-        this.#tipo = novoTipo;
-    }
-
-    get tipo() {
-        return this.#tipo;
-    }
-
-    set frequencia(novaFrequencia) {
-        this.#frequencia = novaFrequencia;
-    }
-    get frequencia (){
-        return this.#frequencia
-    }
+while (true) {
+    console.log('\n=== Menu PC ===');
+    console.log('1. Montar PC');
+    console.log('2. Ver ficha');
+    console.log('3. Instalar software');
+    console.log('0. Sair');
     
-    set capacidade(novaCapacidade) {
-        this.#capacidade = novaCapacidade;
-    }
-    get capacidade (){
-        return this.#capacidade
-    } 
-    
-    imprimir() {
-        this.tipo = prompt("DIGITE TIPO DA SUA MEMORIA : EX. DD3 : ");
-        this.frequencia = prompt("DIGITE A FREQUENCIA DA MEMORIA QUE VOCÊ QUER: EX.1066 MHz. : ");
-        this.capacidade = prompt("DIGITE A CAPACIDADE QUE VOCÊ QUER: EX.16GB: ");
-        console.log(`TIPO DA SUA MEMORIA: ${this.tipo}, COM UMA FREQUÊNCIA DE : ${this.frequencia}, E A CAPACIDADE DE: ${this.capacidade}`);
-    }
+    const opcao = prompt('Opção: ');
 
-    usarMemoria() {
-            let memoriaemUso = Number(prompt(`DIGITE A QUANTIDADE DE MEMORIA DESEJA USAR `));
-            if (capacidade > 0 && memoriaemUso <= this.#capacidade) {           
-                this.#capacidade -= memoriaemUso;
-            if (this.#capacidade > 0 && memoriaemUso <= this.#capacidade) {           
-            } else {
-                console.log(`MEMORIA INFUFIENTE `);}
+    switch (opcao) {
+        case '1':
+            const marca = prompt('Marca: ');
+            const modelo = prompt('Modelo: ');
+            computador1 = new Computador(marca, modelo);
+            computador1.Memoria = new Memoria('DDR4', '3200MHz', 16);
+            computador1.Processador = new Processador('Intel', 'i7', '3.8GHz', 8);
+            computador1.Armazenamento = new Armazenamento('SSD', 512, 100);
+            computador1.Tela = new Tela('15.6"', '1920x1080');
+            computador1.softwares = [];
+            console.log('PC criado!');
+            break;
 
+        case '2':
+            if (!computador1) { console.log('Monte o PC primeiro.'); break; }
+            console.log(`\nPC: ${computador1.marca} ${computador1.modelo}`);
+            if (computador1.Processador) console.log(`CPU: ${computador1.Processador.marca} ${computador1.Processador.modelo}`);
+            if (computador1.Memoria) console.log(`RAM: ${computador1.Memoria.capacidade}GB ${computador1.Memoria.tipo}`);
+            if (computador1.Armazenamento) console.log(`Storage: ${computador1.Armazenamento.capacidade}GB ${computador1.Armazenamento.tipo}`);
+            break;
 
-        } else {
-            console.log(`MEMORIA INFUFIENTE `);
-        }
-    }
+        case '3':
+            if (!computador1) { console.log('Monte o PC primeiro.'); break; }
+            const soft = prompt('Software: ');
+            computador1.softwares.push(soft);
+            console.log(`${soft} instalado!`);
+            break;
 
-    liberarMemoria(quantidade) {
-            this.#capacidade += quantidade;
-            console.log(`Memória liberada: ${quantidade}. Capacidade disponível: ${this.#capacidade}.`);
-        }
-    } //FIMDACLASSE 
+        case '0':
+            console.log('Saindo...');
+            process.exit(0);
 
-class Processador {
-    #marca
-    #modelo
-    #nucleos
-    #velocidade
-    #frequencia
-
-    constructor(marca, modelo, velocidade, nucleos) {
-        this.#marca = marca;
-        this.#modelo = modelo;
-        this.#frequencia = frequencia;
-        this.#nucleos = nucleos;
-    }
-
-    set marca(novaMarca) {
-        this.#marca = novaMarca;
-    }
-    get marca() {
-        return this.#marca;
-    }
-    set modelo(novoModelo) {
-        this.#modelo = novoModelo;
-    }
-    get modelo() {
-        return this.#modelo;
-    }
-    set nucleos(novoNucleos) {
-        this.#nucleos = novoNucleos;
-    }
-    get nucleos() {
-        return this.#nucleos;
-    }
-
-    imprimir() {
-        console.log(`Processador: ${this.#marca}, Modelo: ${this.#modelo}, Núcleos: ${this.#nucleos}, Velocidade: ${this.#velocidade} GHz`);
-    }
-    executarPrograma(nome){
-
-    }
-
-}   //FIMDACLASSE
-
-class Armazenamento {
-#tipo
-#capacidade
-#espaco_utilizado
-
-constructor(tipo, capacidade, espaco_utilizado){
-    this.#tipo = tipo;
-    this.#capacidade = capacidade;
-    this.#espaco_utilizado = espaco_utilizado;
-}
-
-set tipo(novoTipo) {
-        this.#tipo = novoTipo;
-    }
-    get tipo() {
-        return this.#tipo;
-    }
-
-    set capacidade(novaCapacidade) {
-        this.#capacidade = novaCapacidade;
-    }
-    get capacidade() {
-        return this.#capacidade;
-    }
-
-    set espacoUtilizado(novoEspaco) {
-        this.#espaco_utilizado = novoEspaco;
-    }
-    get espacoUtilizado() {
-        return this.#espaco_utilizado;
-    }
-
-    imprimir() {
-        console.log(`Tipo: ${this.#tipo}, Capacidade: ${this.#capacidade}, Espaço Utilizado: ${this.#espaco_utilizado}`);
-    }
-}   //FIMDACLASSE
-
-class Tela {
-#tamanho
-#resolucao
-#espaco_utilizado
-
-    set espacoUtilizado(novoEspaco) {
-        this.#espaco_utilizado = novoEspaco;
-    }
-    get espacoUtilizado() {
-        return this.#espaco_utilizado;
-    }
-
-set resolucao(resolucao) {
-    this.#resolucao = resolucao;
-}
-
-get resolucao() {
-    return this.#resolucao;
-}
-
-    imprimir() {
-        console.log(`Tamanho: ${this.#tamanho}, Resolução: ${this.#resolucao}`);
-    }
-
-    ligar() {
-        console.log("Tela ligada");
-    }
-    desligar() {
-        console.log("Tela desligada");
-    }
-    ajustarResolucao(novaResolucao) {
-        this.#resolucao = novaResolucao;
+        default:
+            console.log('Opção inválida.');
     }
 }
-//FIMDACLASSE
-class Computador {
-    #marca
-    #modelo
-     constructor(marca,modelo, processador, memoria, armazenamento, tela) {
-        this.#marca = marca;
-        this.#modelo = modelo;
-        this.Memoria = memoria;
-        this.Processador = processador;
-        this.Armazenamento = armazenamento;
-        this.Tela = tela;
-     }
-        set marca(novaMarca) {
-            this.#marca = novaMarca;
-        }
-        get marca() {
-            return this.#marca;
-        }
 
-        set modelo(novoModelo) {
-            this.#modelo = novoModelo;
-        }
-        get modelo() {
-            return this.#modelo;
-        }
-
-        imprimirFichatecnica() {
-            console.log("--- Especificações do Computador ---");
-            console.log(this.processador.descrever());
-            console.log(this.memoria.descrever());
-            console.log(this.armazenamento.descrever());
-            console.log(this.tela.descrever());
-            console.log("------------------------------------"); }
-        instalarSoftWare (nome){
-
-
-
-
-        }
-} //FIMDACLASSE
