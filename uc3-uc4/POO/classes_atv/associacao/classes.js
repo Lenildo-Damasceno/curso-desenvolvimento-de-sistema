@@ -71,7 +71,7 @@ export class Processador {
     constructor(marca, modelo, velocidade, nucleos) {
         this.#marca = marca;
         this.#modelo = modelo;
-        this.#frequencia = frequencia;
+        this.#velocidade = velocidade;
         this.#nucleos = nucleos;
     }
 
