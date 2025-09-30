@@ -232,7 +232,5 @@ export class Computador {
                 console.log(`Software ${nome} não encontrado.`);
             }
         }
-} //FIMDACLASSE
-
-// Instâncias de exemplo removidas para que o módulo não execute nada ao ser importado.
+} 
 
