@@ -3,7 +3,7 @@ const prompt = promptSync();
 
 class Transporte  {
     constructor(tipo, capacidade) {
-        super(tipo, capacidade);
+
     }
 
     exibirDetalhes() {

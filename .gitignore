@@ -1,0 +1,38 @@
+# Ignorar dependências do Node.js
+node_modules/
+node_modules/
+
+# Dependências
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+logs/
+*.log
+
+# Builds / cobertura
+dist/
+build/
+out/
+coverage/
+
+# Cache / temporários
+.tmp/
+.temp/
+.cache/
+
+# Ambiente
+.env
+.env.*.local
+
+# IDE
+.vscode/
+*.code-workspace
+
+# SO
+Thumbs.db
+Desktop.ini
+.DS_Store
