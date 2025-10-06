@@ -1,7 +1,7 @@
 import promptSync from "prompt-sync";
 const prompt = promptSync();
 
-class Pessoas  {
+export class Pessoas  {
     #cpf;
 
     constructor(nome, cpf, data_nascimento) {
@@ -24,7 +24,7 @@ class Pessoas  {
 }
 
 
-class Funcionarios extends Pessoas {
+export class Funcionarios extends Pessoas {
     #salario;
     #matricula;
 
@@ -61,19 +61,109 @@ class Funcionarios extends Pessoas {
             const valordashoras = horasEXTRAS * 15;
             console.log("Valor das horas extras: R$" + valordashoras);
         }
-            return;
 }
 }
-class Gerente extends Funcionarios {
+
+
+export class Gerente extends Funcionarios {
     constructor(nome, cpf, data_nascimento, cargo, salario, matricula, setor, quantidadeEquipe) {
         super(nome, cpf, data_nascimento, cargo, salario, matricula);
         this.setor = setor;
         this.quantidadeEquipe = quantidadeEquipe;
-       
+    
+    }
+    calcularBonificacao() {
         if (this.quantidadeEquipe >= 10) {
-            let bonus = this.salario * 0.10;
-            this.salario += bonus;
-            console.log(`${this.nome} recebeu um bônus de R$${bonus.toFixed(2)} por gerenciar uma equipe grande.`);
+            let calculodeBonificacao = this.salario * 0.15;
+            this.salario += calculodeBonificacao;
+            console.log(`${this.nome} recebeu um bônus de R$${calculodeBonificacao.toFixed(2)} por gerenciar uma equipe grande.`);
         }
-   
-}}
+        else {
+            let calculodeBonificacao = this.salario * 0.07;
+            this.salario += calculodeBonificacao;
+            console.log(`${this.nome} recebeu um bônus de R$${calculodeBonificacao.toFixed(2)} por gerenciar uma equipe pequena.`);
+        }
+    }
+    }
+
+
+export class Diretor extends Funcionarios {
+     #participacaoLucros;
+    constructor(nome, cpf, data_nascimento, cargo, salario, matricula, setor, quantidadeEquipe, participacaoLucros, departamento, tempodirecao) {
+        super(nome, cpf, data_nascimento, cargo, salario, matricula);
+        this.participacaoLucros = participacaoLucros;
+    }
+    get participacaoLucros() {
+        return this.#participacaoLucros;
+    }
+    set participacaoLucros(novaParticipacao) {
+        this.#participacaoLucros = novaParticipacao;
+    }
+    calcularGRatificacao() {
+        if (this.tempodirecao >= 5) {
+            const bonus = this.salario * 0.30;
+            this.salario += bonus;
+            console.log(`${this.nome} recebeu um bônus de R$${bonus.toFixed(2)} por 5 anos ou mais de direção.`);
+        } else if (this.tempodirecao < 5 && this.tempodirecao >= 3) {
+            const bonus = this.salario * 0.25;
+            this.salario += bonus;
+            console.log(`${this.nome} recebeu um bônus de R$${bonus.toFixed(2)} por 3 a 5 anos de direção.`);
+        } else if (this.tempodirecao >= 2) {
+            const bonus = this.salario * 0.20;
+            this.salario += bonus;
+            console.log(`${this.nome} recebeu um bônus de R$${bonus.toFixed(2)} por menos de 2 anos de direção.`);
+        }
+    }
+}
+    
+
+
+export class Dono extends Pessoas {
+    #patrimonio; #participacaoAcionarias;
+    constructor(nome, cpf, data_nascimento, patrimonio, participacaoAcionarias) {
+        super(nome, cpf, data_nascimento);
+        this.#patrimonio = patrimonio;
+        this.#participacaoAcionarias = participacaoAcionarias;
+    }
+    get patrimonio() {
+        return this.#patrimonio;
+
+    }
+    
+    set patrimonio(novoPatrimonio) {
+        this.#patrimonio = novoPatrimonio;
+    
+    }
+
+    get participacaoAcionarias() {
+        return this.#participacaoAcionarias;
+    }
+    
+    set participacaoAcionarias(novaParticipacao) {
+        this.#participacaoAcionarias = novaParticipacao;
+    }
+    ivestir (valor) {
+        const valorINVESTIDO = prompt("Digite o valor que você quer investir: ");
+        if (isNaN(valorINVESTIDO) || valorINVESTIDO.trim() === "") {
+            console.log("Valor inválido. O valor deve ser um número.");
+            return;
+        }
+        this.#patrimonio += parseFloat(valorINVESTIDO);
+        console.log(`Novo patrimônio após investimento: R$${this.#patrimonio.toFixed(2)}`);
+    }
+
+    retirarLucro (valor) {
+        const valorRETIRADO = prompt("Digite o valor que você quer retirar: ");
+        if (isNaN(valorRETIRADO) || valorRETIRADO.trim() === "") {
+            console.log("Valor inválido. O valor deve ser um número.");
+            return;
+        }
+        if (parseFloat(valorRETIRADO) > this.#patrimonio) {
+            console.log("Valor inválido. Você não pode retirar mais do que o seu patrimônio.");
+            return;
+        }
+        this.#patrimonio -= parseFloat(valorRETIRADO);
+        console.log(`Novo patrimônio após retirada: R$${this.#patrimonio.toFixed(2)}`);
+    }
+}
+
