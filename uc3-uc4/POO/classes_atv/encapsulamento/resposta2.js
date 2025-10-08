@@ -1,7 +1,6 @@
 import promptSync from "prompt-sync";
 const prompt = promptSync();
 
-//CLASSE
 class ContaBancaria {
     #nomeTitular;
     #saldo;
