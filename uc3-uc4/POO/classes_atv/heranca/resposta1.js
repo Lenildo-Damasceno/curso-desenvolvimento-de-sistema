@@ -76,3 +76,4 @@ class Gerente extends Funcionarios {
             console.log(`${this.nome} recebeu um bônus de R$${bonus.toFixed(2)} por gerenciar uma equipe grande.`);
         }
     }
+}
