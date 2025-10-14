@@ -1,11 +1,11 @@
 import PromptSync from "prompt-sync"
-import * as resposta1 from "./resposta1.js"
+import * as classes_resposta1 from "./resposta1.js" 
 const prompt = PromptSync()
 
 
-const hotel = new resposta1.Hotel("Hotel JS")
+const hotel = new classes_resposta1.Hotel("Hotel JS")
 
-console.log('Bem-vindo ao sistema do hotel!')
+console.log('Bem-vindo ao sistema do hotel JS !')
 while (true) {
     console.log('\n1. Atendente')
     console.log('2. Cliente')
@@ -30,11 +30,17 @@ function menuAtendente() {
         console.log('2. Listar quartos disponíveis')
         console.log('3. Ver reservas')
         console.log('4. Cancelar reserva')
+        console.log('5. Adicionar reserva')
         console.log('0. Voltar')
         const opcao = prompt('Escolha uma opção: ')
+        
+        // CORREÇÃO 3: Lógica do menu corrigida e simplificada
         if (opcao === '1') {
-            // O método adicionarquarto já pede os dados via prompt no módulo
-            hotel.adicionarquarto()
+            try {
+                hotel.adicionarquarto();
+            } catch (error) {
+                console.error(`[ERRO]: ${error.message}`);
+            }
         } else if (opcao === '2') {
             hotel.listarQuartosDisponiveis()
         } else if (opcao === '3') {
@@ -42,6 +48,8 @@ function menuAtendente() {
         } else if (opcao === '4') {
             const cpf = prompt('Digite o CPF da reserva a cancelar: ')
             hotel.cancelarReserva(cpf)
+        } else if (opcao === '5') {
+            hotel.adicionarReserva()
         } else if (opcao === '0') {
             break
         } else {
@@ -58,24 +66,28 @@ function menuCliente() {
         console.log('0. Voltar')
         const opcao = prompt('Escolha uma opção: ')
         if (opcao === '1') {
-            const cpf = prompt('CPF: ')
-            const nome = prompt('Nome: ')
-            const contato = prompt('Contato: ')
-            const cliente = new resposta1.Cliente(cpf, nome, contato)
+           
+            try {
+                const cpf = prompt('CPF: ')
+                const nome = prompt('Nome: ')
+                const contato = prompt('Contato: ')
+            
+                // CORREÇÃO 2: Usando a referência correta da importação
+                const cliente = new classes_resposta1.Cliente(cpf, nome, contato)
 
-            const numeroStr = prompt('Número do quarto que deseja reservar: ')
-            const numero = parseInt(numeroStr, 10)
-            const quarto = hotel.quartos.find(q => q.numero === numero)
-            if (!quarto) {
-                console.log('Quarto não encontrado. Primeiro verifique os quartos disponíveis.')
-                continue
-            }
+                hotel.listarQuartosDisponiveis();
+                const numeroStr = prompt('Número do quarto que deseja reservar: ')
+                const numero = parseInt(numeroStr, 10)
+                const quarto = hotel.quartos.find(q => q.numero === numero)
+                if (!quarto) {
+                    throw new Error('Quarto não encontrado ou indisponível.');
+                }
 
-            const dataStr = prompt('Data da reserva (dd/mm/yyyy ou yyyy-mm-dd): ')
-            const data = parseDate(dataStr)
-            if (!data || isNaN(data.getTime())) {
-                console.log('Data inválida.')
-                continue
+                const dataStr = prompt('Data da reserva (dd/mm/yyyy): ')
+                hotel.reservarQuarto(quarto, dataStr, cliente)
+
+            } catch (error) {
+                console.log(`\n[ERRO] Não foi possível fazer a reserva: ${error.message}\n`);
             }
 
             hotel.reservarQuarto(quarto, data, cliente)
