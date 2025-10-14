@@ -1,5 +1,5 @@
 import PromptSync from "prompt-sync"
-import * as classes_resposta1 from "./resposta1.js" 
+import * as classes_resposta1 from "./classes_resposta1.js" 
 const prompt = PromptSync()
 
 
@@ -34,7 +34,6 @@ function menuAtendente() {
         console.log('0. Voltar')
         const opcao = prompt('Escolha uma opção: ')
         
-        // CORREÇÃO 3: Lógica do menu corrigida e simplificada
         if (opcao === '1') {
             try {
                 hotel.adicionarquarto();
@@ -72,7 +71,6 @@ function menuCliente() {
                 const nome = prompt('Nome: ')
                 const contato = prompt('Contato: ')
             
-                // CORREÇÃO 2: Usando a referência correta da importação
                 const cliente = new classes_resposta1.Cliente(cpf, nome, contato)
 
                 hotel.listarQuartosDisponiveis();
@@ -80,17 +78,26 @@ function menuCliente() {
                 const numero = parseInt(numeroStr, 10)
                 const quarto = hotel.quartos.find(q => q.numero === numero)
                 if (!quarto) {
-                    throw new Error('Quarto não encontrado ou indisponível.');
+                    throw new Error('Quarto não encontrado ou indisponível.')
                 }
 
                 const dataStr = prompt('Data da reserva (dd/mm/yyyy): ')
-                hotel.reservarQuarto(quarto, dataStr, cliente)
+                let data
+                if (dataStr.includes('/')) {
+                    const parts = dataStr.split('/')
+                    data = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10))
+                } else if (dataStr.includes('-')) {
+                    const parts = dataStr.split('-')
+                    data = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10))
+                } else {
+                    throw new Error('Formato de data inválido.')
+                }
+
+                hotel.reservarQuarto(quarto, data, cliente)
 
             } catch (error) {
-                console.log(`\n[ERRO] Não foi possível fazer a reserva: ${error.message}\n`);
+                console.log(`\n[ERRO] Não foi possível fazer a reserva: ${error.message}\n`)
             }
-
-            hotel.reservarQuarto(quarto, data, cliente)
 
         } else if (opcao === '2') {
             const cpf = prompt('Digite seu CPF: ')
@@ -103,4 +110,4 @@ function menuCliente() {
     }
 }
 
-// Menu principal
+

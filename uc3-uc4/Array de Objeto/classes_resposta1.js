@@ -166,4 +166,5 @@ class TesteError extends Error {
         this.name = "TesteError";
     }
 }
+
 export { Cliente, Hotel, Quarto, Reserva, TesteError }
