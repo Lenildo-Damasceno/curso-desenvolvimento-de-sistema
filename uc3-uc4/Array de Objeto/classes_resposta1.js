@@ -1,13 +1,14 @@
 import PromptSync from "prompt-sync"
 const prompt = PromptSync() 
 
+
 class Cliente {
     #cpf
     #contato
     nome
     constructor(cpf, nome, contato) {
         if (typeof cpf !== 'string' || cpf.replace(/\D/g, '').length > 11) {
-            throw new TesteError("CPF inválido. O CPF não pode ter mais de 11 dígitos.");
+            throw new TesteError("CPF inválido. O CPF não pode ter mais de 11 dígitos.")
         }
         this.cpf = cpf
         this.nome = nome
@@ -19,7 +20,7 @@ class Cliente {
     }
     set cpf(novoCpf) {
         if (typeof novoCpf !== 'string' || novoCpf.replace(/\D/g, '').length > 11) {
-            throw new TesteError("CPF inválido. O CPF não pode ter mais de 11 dígitos.");
+            throw new TesteError("CPF inválido. O CPF não pode ter mais de 11 dígitos.")
         }
         this.#cpf = novoCpf
     }
@@ -28,7 +29,7 @@ class Cliente {
     }
     set contato(novoContato) {
         if (typeof novoContato !== 'string' || novoContato.replace(/\D/g, '').length > 11) {
-            throw new TesteError("Contato inválido. O contato deve ter no máximo 11 dígitos numéricos.");
+            throw new TesteError("Contato inválido. O contato deve ter no máximo 11 dígitos numéricos.")
         }
         this.#contato = novoContato
     }
@@ -110,23 +111,23 @@ class Hotel {
     adicionarReserva() {
         try {
 
-            console.log("\n--- Adicionar Nova Reserva ---");
+            console.log("\n--- Adicionar Nova Reserva ---")
             const cpf = prompt('CPF do cliente: ');
             const nome = prompt('Nome do cliente: ');
-            const contato = prompt('Contato do cliente: ');
+            const contato = prompt('Contato do cliente: ')
 
-            const cliente = new Cliente(cpf, nome, contato);
+            const cliente = new Cliente(cpf, nome, contato)
 
 
             this.listarQuartosDisponiveis();
             const numeroQuarto = parseInt(prompt("Digite o número do quarto para reservar: "), 10);
             if (isNaN(numeroQuarto)) {
-                throw new TesteError("Número do quarto inválido.");
+                throw new TesteError("Número do quarto inválido.")
             }
 
-            const quartoParaReservar = this.quartos.find(q => q.numero === numeroQuarto);
+            const quartoParaReservar = this.quartos.find(q => q.numero === numeroQuarto)
             if (!quartoParaReservar) {
-                throw new TesteError("Quarto não encontrado.");
+                throw new TesteError("Quarto não encontrado.")
             }
 
             const dataStr = new Date (prompt('Data da reserva (dd/mm/yyyy): '))
@@ -136,9 +137,10 @@ class Hotel {
             console.log (this.Reservas)
         } catch (error) {
             // Captura e exibe o erro de forma amigável
-            console.error(`\n[ERRO AO ADICIONAR RESERVA]: ${error.message}`);
+            console.error(`\n[ERRO AO ADICIONAR RESERVA]: ${error.message}`)
         }
     }
+    
 }
 
 class Quarto {
@@ -160,10 +162,11 @@ class Reserva {
         this.cliente = cliente
     }
 }
+
 class TesteError extends Error {
     constructor(message) {
         super(message);
-        this.name = "TesteError";
+        this.name = "TesteError"
     }
 }
 

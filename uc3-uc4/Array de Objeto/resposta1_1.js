@@ -1,7 +1,26 @@
 import PromptSync from "prompt-sync"
 import * as classes_resposta1 from "./classes_resposta1.js" 
 const prompt = PromptSync()
+import fs from 'fs'
 
+try {
+    fs.mkdirSync('Projeto Hotel') 
+    console.log(`Diretório criado com sucesso!`)
+} catch (error) {    
+    console.error(`Erro ao criar diretório: ${error.message}`)    
+}
+
+
+function relatorioreserva() {
+    try {
+        let relatorio = 'Relatório de Reservas:\n\n'
+        fs.appendFileSync('Projeto Hotel/relatorioGeraldereserva.txt', hotel.Reservas , 'utf-8')
+        console.log('Relatório de reservas gerado com sucesso!')
+        console.log(`Total de reservas: ${hotel.Reservas.length}`)
+    } catch (error) {
+        console.error(`Erro ao gerar relatório: ${error.message}`)
+    }
+}
 
 const hotel = new classes_resposta1.Hotel("Hotel JS")
 
@@ -31,14 +50,15 @@ function menuAtendente() {
         console.log('3. Ver reservas')
         console.log('4. Cancelar reserva')
         console.log('5. Adicionar reserva')
+        console.log('6. Gerar relatório de reservas')
         console.log('0. Voltar')
         const opcao = prompt('Escolha uma opção: ')
         
         if (opcao === '1') {
             try {
-                hotel.adicionarquarto();
+                hotel.adicionarquarto()
             } catch (error) {
-                console.error(`[ERRO]: ${error.message}`);
+                console.error(`[ERRO]: ${error.message}`)
             }
         } else if (opcao === '2') {
             hotel.listarQuartosDisponiveis()
@@ -49,6 +69,9 @@ function menuAtendente() {
             hotel.cancelarReserva(cpf)
         } else if (opcao === '5') {
             hotel.adicionarReserva()
+        } else if (opcao === '6') {
+            console.log('Gerando relatório de reservas...')
+            relatorioreserva()
         } else if (opcao === '0') {
             break
         } else {
