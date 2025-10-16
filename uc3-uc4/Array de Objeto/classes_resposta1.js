@@ -130,12 +130,12 @@ class Hotel {
                 throw new TesteError("Quarto não encontrado.")
             }
 
-            const dataStr = new Date (prompt('Data da reserva (dd/mm/yyyy): '))
+            const dataStr = new Date (prompt('Data da reserva (ano/mês/dia): '))
             let reservaQuarto = new Reserva(quartoParaReservar, dataStr, cliente)
             this.Reservas.push(reservaQuarto)
             console.log("Reserva adicionada com sucesso.")
             console.log (this.Reservas)
-        } catch (error) {
+        } catch (error) {0
             // Captura e exibe o erro de forma amigável
             console.error(`\n[ERRO AO ADICIONAR RESERVA]: ${error.message}`)
         }

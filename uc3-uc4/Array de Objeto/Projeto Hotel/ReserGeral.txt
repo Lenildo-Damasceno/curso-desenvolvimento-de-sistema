@@ -1,0 +1,12 @@
+Relatório de Reservas - 2025-10-16 22:00:22 UTC
+Quarto 101 (luxo) - Cliente: lenildo, CPF: 08477905410, Contato: 84996686870 - Data: undefined
+Relatório de Reservas - 2025-10-16 22:03:02 UTC
+Quarto 101 (luxo) - Cliente: lenildo, CPF: 08477905410, Contato: 84996686870 - Data: undefined
+Relatório de Reservas - 16/10/2025
+Quarto 101 (lux) - Cliente: lkhhghu, CPF: 08477905410, Contato: 84996686870 - Data: Invalid Date
+Relatório de Reservas - 16/10/2025
+Quarto 101 (lux) - Cliente: lenildo, CPF: 08477905410, Contato: 84996686870 - Data: Tue Nov 11 2025 00:00:00 GMT-0300 (Horário Padrão de Brasília)
+Relatório de Reservas - 16/10/2025
+Quarto 101 (lux) - Cliente: lenildo, CPF: 08477905410, Contato: 8499666870 - Data: 11/11/2025
+Relatório de Reservas - 16/10/2025
+Quarto 101 (luxo) - Cliente: lenildo, CPF: 08477905410, Contato: 84996686870 - Data: 11/11/2025

@@ -2,28 +2,47 @@ import PromptSync from "prompt-sync"
 import * as classes_resposta1 from "./classes_resposta1.js" 
 const prompt = PromptSync()
 import fs from 'fs'
+import { Console } from "console"
 
-try {
+try { // criar diretorio se não existir
     fs.mkdirSync('Projeto Hotel') 
     console.log(`Diretório criado com sucesso!`)
 } catch (error) {    
     console.error(`Erro ao criar diretório: ${error.message}`)    
 }
+const hotel = new classes_resposta1.Hotel("Hotel JS")
 
+function reservarQuarto (){
+  let relatorio = `Relatório de Reservas - ${new Date(). toLocaleDateString ('pt-BR')}\n`
+        if (hotel.Reservas.length === 0) {
+        relatorio += 'Nenhuma reserva encontrada.\n'
+    } else {                    
+        hotel.Reservas.forEach(reserva => {
+            relatorio += `Quarto ${reserva.quarto.numero} (${reserva.quarto.tipoDeQuarto}) - Cliente: ${reserva.cliente.nome}, CPF: ${reserva.cliente.cpf}, Contato: ${reserva.cliente.contato} - Data: ${reserva.dataReserva.toLocaleDateString('pt-BR')}\n`
+        })
+        return relatorio
+    }  
 
-function relatorioreserva() {
+}
+function readArquivo(caminho) {
     try {
-        let relatorio = 'Relatório de Reservas:\n\n'
-        fs.appendFileSync('Projeto Hotel/relatorioGeraldereserva.txt', hotel.Reservas , 'utf-8')
-        console.log('Relatório de reservas gerado com sucesso!')
-        console.log(`Total de reservas: ${hotel.Reservas.length}`)
+        const dados = fs.readFileSync(caminho, 'utf8')
+        return dados
     } catch (error) {
-        console.error(`Erro ao gerar relatório: ${error.message}`)
+        console.error(`Erro ao ler arquivo: ${error.message}`)
+        return null
     }
 }
 
-const hotel = new classes_resposta1.Hotel("Hotel JS")
-
+function Relatorios(){
+    try{
+    let  relatorio = reservarQuarto()
+     fs.appendFileSync(`./Projeto Hotel/ReserGeral.txt`, relatorio, 'utf8')
+     console.log('Relatório salvo com sucesso!', relatorio)
+    } catch (error){
+        console.error(`Erro ao salvar relatório: ${error.message}`)
+}
+}
 console.log('Bem-vindo ao sistema do hotel JS !')
 while (true) {
     console.log('\n1. Atendente')
@@ -50,7 +69,7 @@ function menuAtendente() {
         console.log('3. Ver reservas')
         console.log('4. Cancelar reserva')
         console.log('5. Adicionar reserva')
-        console.log('6. Gerar relatório de reservas')
+        console.log('6. menu relatorio')
         console.log('0. Voltar')
         const opcao = prompt('Escolha uma opção: ')
         
@@ -70,8 +89,19 @@ function menuAtendente() {
         } else if (opcao === '5') {
             hotel.adicionarReserva()
         } else if (opcao === '6') {
-            console.log('Gerando relatório de reservas...')
-            relatorioreserva()
+            while (true) {
+                const Relatorios2 = prompt('DIGITE 1 PARA RELATORIO GERAL E 2 PARA RELATORIO POR MES(1/n): ').toLowerCase()
+                if (Relatorios2 === '1') {
+                    console.log("Relatório Geral de Reservas:")
+                    Relatorios()
+                    break
+                } else if (Relatorios2 === '2') {
+                    relatoriosPorMes()
+                    break
+                } else {
+                    console.log('Opção inválida.')
+                }
+            }
         } else if (opcao === '0') {
             break
         } else {
@@ -104,7 +134,7 @@ function menuCliente() {
                     throw new Error('Quarto não encontrado ou indisponível.')
                 }
 
-                const dataStr = prompt('Data da reserva (dd/mm/yyyy): ')
+                const dataStr = prompt('Data da reserva (ano/mês/dia): ')
                 let data
                 if (dataStr.includes('/')) {
                     const parts = dataStr.split('/')
@@ -134,4 +164,3 @@ function menuCliente() {
 }
 
 
-//ok
