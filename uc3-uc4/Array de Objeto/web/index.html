@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hotel - Versão HTML Simples</title>
+  <style>
+    :root { --bg:#0f172a; --panel:#111827; --muted:#94a3b8; --text:#e5e7eb; --accent:#22c55e; --warn:#f59e0b; --err:#ef4444; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--text); }
+    header { padding: 16px 20px; background: #0b1220; border-bottom: 1px solid #1f2937; position: sticky; top: 0; z-index: 10; }
+    header h1 { margin: 0; font-size: 18px; letter-spacing: .5px; }
+    main { padding: 20px; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .card { background: var(--panel); border: 1px solid #1f2937; border-radius: 12px; padding: 16px; }
+    .card h2 { margin: 0 0 12px; font-size: 16px; color: #cbd5e1; }
+    label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 6px; }
+    input, select, button { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #1f2937; background: #0b1220; color: var(--text); }
+    input::placeholder { color: #64748b; }
+    button { cursor: pointer; background: linear-gradient(135deg, #16a34a, #22c55e); border: none; font-weight: 600; }
+    button.secondary { background: #1057e4; border: 1px solid #334155; }
+    button.danger { background: linear-gradient(135deg, #b91c1c, #ef4444); }
+    .row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .list { margin-top: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: #cbd5e1; max-height: 220px; overflow: auto; border: 1px dashed #334155; border-radius: 8px; padding: 8px; background:#0b1220; }
+    .msg { margin-top: 8px; font-size: 13px; color: var(--muted); }
+    footer { padding: 14px 20px; border-top: 1px solid #1f2937; color: #94a3b8; font-size: 12px; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; background:#0b1220; border:1px solid #334155; color:#a7f3d0; font-size:11px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hotel JS <span class="badge">demo</span></h1>
+  </header>
+
+  <main>
+    <section class="card" id="sec-hotel">
+      <h2>Informações do Hotel</h2>
+      <div class="row">
+        <div>
+          <label for="hotelNome">Nome do hotel</label>
+          <input id="hotelNome" placeholder="Hotel JS" />
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button id="btnAtualizarHotel" class="secondary">Atualizar nome</button>
+        </div>
+      </div>
+      <div class="msg" id="hotelInfo"></div>
+    </section>
+
+    <section class="card">
+      <h2>Adicionar quarto</h2>
+      <div class="row">
+        <div>
+          <label for="quartoNumero">Número</label>
+          <input id="quartoNumero" type="number" min="1" placeholder="101" />
+        </div>
+        <div>
+          <label for="quartoTipo">Tipo</label>
+          <input id="quartoTipo" placeholder="Casal, Solteiro, etc." />
+        </div>
+      </div>
+      <button id="btnAddQuarto">Adicionar quarto</button>
+      <div class="msg" id="msgAddQuarto"></div>
+    </section>
+
+    <section class="card">
+      <h2>Listar quartos disponíveis</h2>
+      <button id="btnListarQuartos" class="secondary">Atualizar lista</button>
+      <div class="list" id="listaQuartos"></div>
+    </section>
+
+    <section class="card">
+      <h2>Nova reserva</h2>
+      <div class="row">
+        <div>
+          <label for="cpf">CPF</label>
+          <input id="cpf" placeholder="Somente números" />
+        </div>
+        <div>
+          <label for="nome">Nome</label>
+          <input id="nome" placeholder="Nome do cliente" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="contato">Contato</label>
+          <input id="contato" placeholder="Whatsapp/Telefone" />
+        </div>
+        <div>
+          <label for="dataReserva">Data</label>
+          <input id="dataReserva" type="date" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="numeroReserva">Quarto (número)</label>
+          <input id="numeroReserva" type="number" min="1" placeholder="101" />
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button id="btnReservar">Reservar</button>
+        </div>
+      </div>
+      <div class="msg" id="msgReserva"></div>
+    </section>
+
+    <section class="card">
+      <h2>Reservas</h2>
+      <div class="row">
+        <button id="btnListarReservas" class="secondary">Listar reservas</button>
+        <div></div>
+      </div>
+      <div class="list" id="listaReservas"></div>
+    </section>
+
+    <section class="card">
+      <h2>Buscar / Cancelar por CPF</h2>
+      <div class="row">
+        <div>
+          <label for="cpfBusca">CPF</label>
+          <input id="cpfBusca" placeholder="CPF do cliente" />
+        </div>
+        <div>
+          <label>&nbsp;</label>
+          <button id="btnBuscar">Buscar</button>
+        </div>
+      </div>
+      <div class="row">
+        <button id="btnCancelar" class="danger">Cancelar reserva</button>
+        <div></div>
+      </div>
+      <div class="list" id="resultadoBusca"></div>
+    </section>
+  </main>
+
+  <footer>
+    Versão de demonstração em HTML. Os dados ficam apenas em memória durante a sessão.
+  </footer>
+
+<script>
+// ===== Modelo de domínio (baseado no seu código) =====
+class TesteError extends Error { constructor(message) { super(message); this.name = 'TesteError'; } }
+
+class Cliente {
+  #cpf; #contato; nome;
+  constructor(cpf, nome, contato) {
+    if (typeof cpf !== 'string' || cpf.replace(/\D/g, '').length > 11) {
+      throw new TesteError('CPF inválido. O CPF não pode ter mais de 11 dígitos.')
+    }
+    this.cpf = cpf; this.nome = nome; this.contato = contato;
+  }
+  get cpf() { return this.#cpf }
+  set cpf(v) {
+    if (typeof v !== 'string' || v.replace(/\D/g, '').length > 11) {
+      throw new TesteError('CPF inválido. O CPF não pode ter mais de 11 dígitos.')
+    }
+    this.#cpf = v
+  }
+  get contato() { return this.#contato }
+  set contato(v) {
+    if (typeof v !== 'string' || v.replace(/\D/g, '').length > 11) {
+      throw new TesteError('Contato inválido. Máx 11 dígitos numéricos.')
+    }
+    this.#contato = v
+  }
+}
+
+class Quarto { constructor(numero, tipoDeQuarto) { this.numero = numero; this.tipoDeQuarto = tipoDeQuarto } }
+class Reserva { constructor(quarto, dataReserva, cliente) { this.quarto = quarto; this.dataReserva = dataReserva; this.cliente = cliente } }
+
+class Hotel {
+  constructor(nome) { this.nome = nome; this.quartos = []; this.Reservas = [] }
+  setNome(n) { this.nome = n || 'Hotel JS' }
+  adicionarquarto(numero, tipoDeQuarto) {
+    const num = parseInt(numero, 10);
+    if (Number.isNaN(num) || !tipoDeQuarto) throw new TesteError('Dados inválidos para quarto')
+    if (this.quartos.some(q => q.numero === num)) throw new TesteError('Número de quarto já cadastrado')
+    this.quartos.push(new Quarto(num, tipoDeQuarto))
+  }
+  listarQuartosDisponiveis() {
+    // Disponíveis = quartos que não possuem nenhuma reserva (modelo simples igual ao seu)
+    return this.quartos.filter(q => !this.Reservas.some(r => r.quarto === q))
+  }
+  reservarQuarto(numero, data, cliente) {
+    const num = parseInt(numero, 10)
+    const quarto = this.quartos.find(q => q.numero === num)
+    if (!quarto) throw new TesteError('Quarto não encontrado')
+    if (this.Reservas.some(r => r.quarto === quarto)) throw new TesteError('Quarto já está reservado')
+    const d = (data instanceof Date) ? data : new Date(data)
+    if (Number.isNaN(d.getTime())) throw new TesteError('Data inválida')
+    const nova = new Reserva(quarto, d, cliente)
+    this.Reservas.push(nova)
+  }
+  cancelarReservaPorCPF(cpf) {
+    const idx = this.Reservas.findIndex(r => r.cliente.cpf === cpf)
+    if (idx === -1) throw new TesteError('Reserva não encontrada para este CPF')
+    const [rem] = this.Reservas.splice(idx, 1)
+    return rem
+  }
+  buscarReservaPorCPF(cpf) {
+    return this.Reservas.find(r => r.cliente.cpf === cpf) || null
+  }
+  listarReservas() { return [...this.Reservas] }
+}
+
+// ===== Instância única do Hotel na página =====
+const hotel = new Hotel('Hotel JS')
+
+// ===== Helpers UI =====
+const qs = sel => document.querySelector(sel)
+const fmtData = d => new Date(d).toLocaleDateString('pt-BR')
+function alertMsg(el, text, type='info') {
+  el.textContent = text
+  el.style.color = type === 'error' ? '#fca5a5' : (type==='warn' ? '#fde68a' : '#cbd5e1')
+}
+
+// Hotel info
+const hotelNome = qs('#hotelNome'); const hotelInfo = qs('#hotelInfo');
+qs('#btnAtualizarHotel').addEventListener('click', () => {
+  hotel.setNome(hotelNome.value.trim())
+  alertMsg(hotelInfo, `Nome do hotel: ${hotel.nome}`)
+})
+alertMsg(hotelInfo, `Nome do hotel: ${hotel.nome}`)
+
+// Adicionar quarto
+qs('#btnAddQuarto').addEventListener('click', () => {
+  const numero = qs('#quartoNumero').value.trim()
+  const tipo = qs('#quartoTipo').value.trim()
+  const msg = qs('#msgAddQuarto')
+  try {
+    hotel.adicionarquarto(numero, tipo)
+    alertMsg(msg, 'Quarto adicionado com sucesso.')
+    qs('#quartoNumero').value = ''
+    qs('#quartoTipo').value = ''
+  } catch (e) {
+    alertMsg(msg, e.message || 'Erro ao adicionar quarto', 'error')
+  }
+})
+
+// Listar quartos disponíveis
+qs('#btnListarQuartos').addEventListener('click', () => {
+  const list = qs('#listaQuartos')
+  const disponiveis = hotel.listarQuartosDisponiveis()
+  if (disponiveis.length === 0) { list.textContent = 'Nenhum quarto disponível.'; return }
+  list.innerHTML = disponiveis.map(q => `- Quarto ${q.numero}: ${q.tipoDeQuarto}`).join('<br/>')
+})
+
+// Nova reserva
+qs('#btnReservar').addEventListener('click', () => {
+  const msg = qs('#msgReserva')
+  try {
+    const cpf = qs('#cpf').value.trim()
+    const nome = qs('#nome').value.trim()
+    const contato = qs('#contato').value.trim()
+    const dataStr = qs('#dataReserva').value
+    const numero = qs('#numeroReserva').value.trim()
+
+    const cliente = new Cliente(cpf, nome, contato)
+    const data = dataStr ? new Date(dataStr + 'T00:00:00') : new Date('')
+    hotel.reservarQuarto(numero, data, cliente)
+
+    alertMsg(msg, 'Reserva realizada com sucesso.')
+    // limpar
+    ['cpf','nome','contato','dataReserva','numeroReserva'].forEach(id => qs('#'+id).value='')
+  } catch (e) {
+    alertMsg(msg, e.message || 'Erro ao reservar', 'error')
+  }
+})
+
+// Listar reservas
+qs('#btnListarReservas').addEventListener('click', () => {
+  const list = qs('#listaReservas')
+  const reservas = hotel.listarReservas()
+  if (reservas.length === 0) { list.textContent = 'Nenhuma reserva encontrada.'; return }
+  list.innerHTML = reservas.map(r => `- Quarto ${r.quarto.numero} reservado por ${r.cliente.nome} (CPF ${r.cliente.cpf}) em ${fmtData(r.dataReserva)}`).join('<br/>')
+})
+
+// Buscar por CPF
+qs('#btnBuscar').addEventListener('click', () => {
+  const cpf = qs('#cpfBusca').value.trim()
+  const out = qs('#resultadoBusca')
+  const r = hotel.buscarReservaPorCPF(cpf)
+  if (!r) { out.textContent = 'Reserva não encontrada.'; return }
+  out.textContent = `Reserva de ${r.cliente.nome} (CPF ${r.cliente.cpf}) – Quarto ${r.quarto.numero} – Data ${fmtData(r.dataReserva)}`
+})
+
+// Cancelar por CPF
+qs('#btnCancelar').addEventListener('click', () => {
+  const cpf = qs('#cpfBusca').value.trim()
+  const out = qs('#resultadoBusca')
+  try {
+    const r = hotel.cancelarReservaPorCPF(cpf)
+    out.textContent = `Reserva cancelada: ${r.cliente.nome} (CPF ${r.cliente.cpf}) – Quarto ${r.quarto.numero}`
+  } catch (e) {
+    out.textContent = e.message || 'Erro ao cancelar'
+  }
+})
+</script>
+</body>
+</html>
